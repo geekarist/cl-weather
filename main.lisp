@@ -2,14 +2,12 @@
   :TBD)
 
 (defun view (model)
-  '(:page-header
-    (:home-button (:icon :TBD
-                   :on-click (:type :type-navigation
-                              :destination :destination-home))
-     :today-button (:text "Auxerre, Yonne, -1°C"
-                    :on-click (:type :type-navigation
-                               :destination :destination-today)))
-    
+  '(:page-header (:home-button (:icon :TBD
+                                :on-click (:type :type-navigation
+                                           :destination :destination-home))
+                  :today-button (:text "Auxerre, Yonne, -1°C"
+                                 :on-click (:type :type-navigation
+                                            :destination :destination-today)))
     :page-content
     (:today-block (:title "TODAY'S WEATHER"
                    :subtitle "SAT, DEC 27"
@@ -26,7 +24,12 @@
                             :real-feel "-1°"
                             :unit "C")
                      :desc "Mostly clear"
-                     :details (:TBD))))))
+                     :details ((:label "RealFeel Shade™" :value "-2°")
+                               (:label "Wind" :value "NNE 9 km/h")
+                               (:label "Wind Gusts" :value "21 km/h")
+                               (:label "Air Quality"
+                                :value "Poor"
+                                :color :color-yellow)))))))
 
 (defun update (model message)
   :TBD)
