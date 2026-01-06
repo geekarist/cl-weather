@@ -1,35 +1,67 @@
 (defun init ()
-  :TBD)
+  '(:location (:city "Auxerre" :department "Yonne")
+    :conditions-current (:temperature (:value -1
+                                       :unit :unit-deg-celsius)
+                         :cover :cover-sunny-partly-cloudy
+                         :air-quality 75)
+    :conditions-today (:low (:temperature (:value -4
+                                           :unit :unit-deg-celsius)
+                             :summary "Clearing and cold"
+                             :cover :cover-intermittent-clouds)
+                       :high  (:temperature (:value 2
+                                             :unit :unit-deg-celsius)
+                               :cover :cover-partly-sunny-w-flurries
+                               :summary "Tomorrow: a morning flurry; otherwise, chilly with sunshine and a few clouds"
+                               :air-quality :TBD
+                               :pressure :TBD
+                               :precipitation))))
+
+(defparameter +strings+
+  '(:unit-deg-celsius "°C"))
 
 (defun view (model)
-  '(:page-header (:home-button (:icon :TBD
-                                :on-click (:type :type-navigation
-                                           :destination :destination-home))
-                  :today-button (:text "Auxerre, Yonne, -1°C"
-                                 :on-click (:type :type-navigation
-                                            :destination :destination-today)))
-    :page-content
-    (:today-block (:title "TODAY'S WEATHER"
-                   :subtitle "SAT, DEC 27"
-                   :prediction-high (:icon :icon-sun-behind-small-cloud
-                                     :desc "Sunny to partly cloudy"
-                                     :temp "Hi: 7°")
-                   :prediction-low (:icon :icon-moon-behind-small-cloud
-                                    :desc "Tonight: Mainly clear and cold"
-                                    :temp "Lo: -2°"))
-     :current-block (:title "CURRENT WEATHER"
-                     :subtitle "6:17 PM"
-                     :icon :icon-moon-behind-small-cloud
-                     :temp (:actual "-1°"
-                            :real-feel "-1°"
-                            :unit "C")
-                     :desc "Mostly clear"
-                     :details ((:label "RealFeel Shade™" :value "-2°")
-                               (:label "Wind" :value "NNE 9 km/h")
-                               (:label "Wind Gusts" :value "21 km/h")
-                               (:label "Air Quality"
-                                :value "Poor"
-                                :color :color-yellow)))))))
+  (let* ((model-location (getf model :location))
+         (model-conditions-current (getf model :conditions-current))
+         (model-conditions-current-temp
+           (getf model-conditions-current :temperature))
+         (model-conditions-current-temp-unit
+           (getf model-conditions-current-temp :unit))
+         (model-conditions-current-temp-value
+           (getf model-conditions-current-temp :value))
+         (unit-str (getf +strings+ model-conditions-current-temp-unit))
+         (today-button-text (format nil "~A, ~A, ~D~A"
+                             (getf model-location :city)
+                             (getf model-location :department)
+                             model-conditions-current-temp-value
+                             unit-str)))
+    `(:header (:home-button (:icon :icon-app-logo
+                             :on-click (:type :type-navigation
+                                        :destination :destination-home))
+               :today-button (:text ,today-button-text
+                              :on-click (:type :type-navigation
+                                         :destination :destination-today)))
+      :content
+      (:today-block (:title "TODAY'S WEATHER"
+                     :subtitle "SAT, DEC 27"
+                     :high (:icon :icon-sun-behind-small-cloud
+                            :desc "Sunny to partly cloudy"
+                            :temp "Hi: 7°")
+                     :low (:icon :icon-moon-behind-small-cloud
+                           :desc "Tonight: Mainly clear and cold"
+                           :temp "Lo: -2°"))
+       :current-block (:title "CURRENT WEATHER"
+                       :subtitle "6:17 PM"
+                       :icon :icon-moon-behind-small-cloud
+                       :temp (:actual "-1°"
+                              :real-feel "-1°"
+                              :unit "C")
+                       :desc "Mostly clear"
+                       :details ((:label "RealFeel Shade™" :value "-2°")
+                                 (:label "Wind" :value "NNE 9 km/h")
+                                 (:label "Wind Gusts" :value "21 km/h")
+                                 (:label "Air Quality"
+                                  :value "Poor"
+                                  :color :color-yellow)))))))
 
 (defun update (model message)
   :TBD)
