@@ -16,3 +16,4 @@
 *.wx64fsl
 *.wx32fsl
 *~
+/*slime-repl sbcl*
