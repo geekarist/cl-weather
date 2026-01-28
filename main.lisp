@@ -17,7 +17,8 @@
                                :precipitation))))
 
 (defparameter +strings+
-  '(:unit-deg-celsius "°C"))
+  '(:unit-deg-celsius "°C"
+    :label-today-subtitle "TODAY'S WEATHER"))
 
 (defun view (model)
   (let* ((model-location (getf model :location))
@@ -30,10 +31,12 @@
            (getf model-conditions-current-temp :value))
          (unit-str (getf +strings+ model-conditions-current-temp-unit))
          (today-button-text (format nil "~A, ~A, ~D~A"
-                             (getf model-location :city)
-                             (getf model-location :department)
-                             model-conditions-current-temp-value
-                             unit-str)))
+                                    (getf model-location :city)
+                                    (getf model-location :department)
+                                    model-conditions-current-temp-value
+                                    unit-str))
+         (today-block-title (getf +strings+ :label-today-subtitle))
+         (today-block-subtitle (getf model-conditions-today-date)))
     `(:header (:home-button (:icon :icon-app-logo
                              :on-click (:type :type-navigation
                                         :destination :destination-home))
@@ -41,7 +44,7 @@
                               :on-click (:type :type-navigation
                                          :destination :destination-today)))
       :content
-      (:today-block (:title "TODAY'S WEATHER"
+      (:today-block (:title ,today-block-title
                      :subtitle "SAT, DEC 27"
                      :high (:icon :icon-sun-behind-small-cloud
                             :desc "Sunny to partly cloudy"
